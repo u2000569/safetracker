@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "262816012279",
+    "project_id": "pickready",
+    "storage_bucket": "pickready.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262816012279:android:74bdf7b38cd8f6c98600f2",
+        "android_client_info": {
+          "package_name": "com.example.pickready"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262816012279-1o8jkkatkfq3tanj2f8qchtdr2hhdk4p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pickready",
+            "certificate_hash": "cdc5ffa546620bc55c7105339d0a64faad5b1cf4"
+          }
+        },
+        {
+          "client_id": "262816012279-rs89gpa9j0fuc1r60o9hq05c2da2dp3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1PKffyKf3fIszXQbVoloHNJ9k7XcnKYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262816012279-rs89gpa9j0fuc1r60o9hq05c2da2dp3d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "262816012279-0p376e6m8vrtao7knccjh0b3nni2gsfb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pickready"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262816012279:android:3522f00d6e0c6ea18600f2",
+        "android_client_info": {
+          "package_name": "com.example.safetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262816012279-rs89gpa9j0fuc1r60o9hq05c2da2dp3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1PKffyKf3fIszXQbVoloHNJ9k7XcnKYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262816012279-rs89gpa9j0fuc1r60o9hq05c2da2dp3d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "262816012279-0p376e6m8vrtao7knccjh0b3nni2gsfb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pickready"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
