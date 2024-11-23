@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../constants/enums.dart';
+
 class SHelperFunctions {
   static Color? getColor(String value) {
     /// Define your product specific colors here and it will match the attribute colors and show specific 🟠🟡🟢🔵🟣🟤
@@ -36,6 +38,23 @@ class SHelperFunctions {
       return Colors.indigo;
     } else {
       return null;
+    }
+  }
+
+  // Not Needed in this app can change to status student
+  static Color getStudentStatusColor(StudentStatus value) {
+    if (StudentStatus.excuse == value) {
+      return Colors.blue;
+    } else if (StudentStatus.pending == value) {
+      return Colors.orange;
+    } else if (StudentStatus.sick == value) {
+      return Colors.purple;
+    } else if (StudentStatus.present == value) {
+      return Colors.green;
+    } else if (StudentStatus.absent == value) {
+      return Colors.red;
+    } else {
+      return Colors.grey;
     }
   }
 
