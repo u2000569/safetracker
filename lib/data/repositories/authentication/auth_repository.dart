@@ -82,7 +82,7 @@ class AuthenticationRepository extends GetxController {
 
     }else{
       Get.offAllNamed(SRoutes.homeMenu);
-      SLoggerHelper.info('User is logged in');
+      SLoggerHelper.info('$user is logged in');
     }
   }
 

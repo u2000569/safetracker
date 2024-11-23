@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safetracker/common/widgets/custom_shapes/containers/rounded_container.dart';
+import 'package:safetracker/common/widgets/loaders/loading_animate.dart';
 import 'package:safetracker/features/school/controllers/grade_controller.dart';
 import 'package:safetracker/features/school/screens/activity/attendance/widgets/nfc_screen.dart';
+import 'package:safetracker/utils/constants/sizes.dart';
+import 'package:safetracker/utils/popups/loader.dart';
+
+import '../../../controllers/student/student_controller.dart';
+import 'students_table/students_table.dart';
 
 class AttendanceScreen extends StatelessWidget {
   final GradeController gradeController = Get.put(GradeController());
@@ -10,6 +17,7 @@ class AttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final studentController = Get.put(StudentController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Attendance'),
@@ -28,7 +36,7 @@ class AttendanceScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () => Get.to(() => NFCscreen(action: 'check out',)),
-                    child: const Text('Check In'),
+                    child: const Text('Check Out'),
                   ),
                 ],
               ),
@@ -51,6 +59,25 @@ class AttendanceScreen extends StatelessWidget {
                   );
                 }
               }),
+              const SizedBox(height: SSizes.spaceBtwItems),
+              // table body
+              Obx((){
+                // show loader
+                if(studentController.isLoading.value) return const SLoadingAnimate();
+
+                return const SRoundedContainer(
+                  child: Column(
+                    children: [
+                      // Table Header
+
+                      StudentsTable(),
+                    ],
+                  ),
+                );
+
+              }
+              )
+
             ],
           ),
         ),

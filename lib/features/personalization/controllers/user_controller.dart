@@ -22,10 +22,6 @@ import '../screens/profile/re_authenticate_user_login_form.dart';
 class UserController extends GetxController {
   static UserController get instance => Get.find();
 
-  UserController() {
-    print('UserController constructor called');
-  }
-
   Rx<UserModel> user = UserModel.empty().obs;
   final imageUploading = false.obs;
   final loading = false.obs;
@@ -50,8 +46,7 @@ class UserController extends GetxController {
   // init user data when home screen appears
   @override 
   void onInit() {
-    print('UserController Initialized');
-    
+    SLoggerHelper.debug('UserController onInit called');
     fetchUserDetails();
     super.onInit();
     

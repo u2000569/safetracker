@@ -10,7 +10,7 @@ class GeneralBindings extends Bindings {
   void dependencies() {
     /// Core
     Get.put(NetworkManager());
-    Get.put(() => UserController());
+    // Get.put(UserController(), permanent: true);
     // Get.put(StudentRepository());
     print('GeneralBindings called');
     // Get.put(AppScreenController(), permanent: true);

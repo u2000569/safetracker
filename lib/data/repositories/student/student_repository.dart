@@ -17,6 +17,35 @@ class StudentRepository extends GetxController {
   /*--------------------------------- FUCNTIONS ---------------------------------*/
 
   // Get all students from the 'Student' collection
+  // Get all students related to the current user
+  Future<List<StudentModel>> getAllStudents() async{
+    try {
+      final result = await _db.collection('Students').orderBy('attendanceDate', descending: true).get(const GetOptions(source: Source.server));
+      return result.docs.map((documentSnaphot) => StudentModel.fromSnapshot(documentSnaphot)).toList();
+    } on FirebaseException catch(e){
+      throw SFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const SFormatException();
+    } on PlatformException catch (e) {
+      throw SPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<void> deleteStudent(String studentId) async {
+    try {
+      await _db.collection("Students").doc(studentId).delete();
+    } on FirebaseException catch (e) {
+      throw SFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const SFormatException();
+    } on PlatformException catch (e) {
+      throw SPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
 
   // Get limited featured students
   Future<List<StudentModel>> getFeaturedStudents() async{

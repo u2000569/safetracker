@@ -39,6 +39,7 @@ dependencies:
   test: ^1.16.8
   mockito: ^5.0.15
   intl: ^0.19.0
+  data_table_2: ^2.5.15
 
   # utility package
   flutter_native_splash: ^2.4.0
