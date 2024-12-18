@@ -16,7 +16,7 @@ class StudentsTable extends StatelessWidget {
       (){
         // table
         return SPaginatedDataTable(
-          minWidth: 1000,
+          minWidth: 100,
           sortAscending: controller.sortAscending.value,
           sortColumnIndex: controller.sortColumnIndex.value,
           columns: [
@@ -24,9 +24,9 @@ class StudentsTable extends StatelessWidget {
               label: const Text('Student'),
               onSort: (columnIndex, ascending) => controller.sortByName(columnIndex, ascending),
             ),
-            const DataColumn2(label: Text('Student ID')),
-            const DataColumn2(label: Text('Student Grade')),
-            const DataColumn2(label: Text('Student Status')),
+            // const DataColumn2(label: Text('Student ID')),
+            const DataColumn2(label: Text('Grade')),
+            const DataColumn2(label: Text('Status')),
           ],
           source: StudentRows(),
         );

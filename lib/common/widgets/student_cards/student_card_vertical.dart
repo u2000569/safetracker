@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:safetracker/common/styles/shadows.dart';
 
 import 'package:safetracker/utils/constants/colors.dart';
@@ -7,7 +6,7 @@ import 'package:safetracker/utils/constants/enums.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
 import 'package:safetracker/utils/helpers/helper_functions.dart';
 
-import '../../../features/school/controllers/student/student_controller.dart';
+// import '../../../features/school/controllers/student/student_controller.dart';
 import '../../../features/school/models/student_model.dart';
 import '../custom_shapes/containers/rounded_container.dart';
 import '../images/s_rounded_image.dart';
@@ -28,7 +27,7 @@ class SStudentCardVertical extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final studentController = StudentController.instance;
+    // final studentController = StudentController.instance;
     final dark = SHelperFunctions.isDarkMode(context);
     return GestureDetector(
       // onTap: () => Get.to(() => StudentDetailScreen(student: student)),
@@ -70,6 +69,8 @@ class SStudentCardVertical extends StatelessWidget {
                   SGradeNameWithVerifiedIcon(title: student.grade!.name, gradeTextSize: TextSizes.small),
                   const SizedBox(height: SSizes.spaceBtwItems/2),
                   SStatus(title: student.studentStatusText, gradeTextSize: TextSizes.small),
+                  const SizedBox(height: SSizes.spaceBtwItems/2),
+                  SStatus(title: student.parent!.email , gradeTextSize: TextSizes.small),
                 ],
               ),
             )

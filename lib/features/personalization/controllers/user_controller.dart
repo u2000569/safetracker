@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:safetracker/data/repositories/authentication/auth_repository.dart';
 import 'package:safetracker/data/repositories/parent/parent_repository.dart';
 import 'package:safetracker/data/repositories/teacher/teacher_repository.dart';
-import 'package:safetracker/utils/constants/enums.dart';
+import 'package:safetracker/features/school/controllers/student/student_controller.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 import 'package:safetracker/utils/popups/full_screen_loader.dart';
@@ -13,9 +13,7 @@ import 'package:safetracker/utils/popups/full_screen_loader.dart';
 import '../../../common/widgets/loaders/circular_loader.dart';
 import '../../../data/repositories/user/user_repository.dart';
 import '../../../utils/constants/image_strings.dart';
-import '../../../utils/helpers/network_manager.dart';
 import '../../../utils/popups/loader.dart';
-import '../../authentication/screens/login/login.dart';
 import '../models/user_model.dart';
 import '../screens/profile/re_authenticate_user_login_form.dart';
 
@@ -47,7 +45,13 @@ class UserController extends GetxController {
   @override 
   void onInit() {
     SLoggerHelper.debug('UserController onInit called');
-    fetchUserDetails();
+    fetchUserDetails().then((_) {
+      if(user.value.email.isNotEmpty){
+        StudentController.instance.fetchStudentForParent(user.value.email);
+        SLoggerHelper.info('Trigger student fetch when user data is available');
+      }
+    });
+    UserRepository().saveOneSignalId();
     super.onInit();
     
   }

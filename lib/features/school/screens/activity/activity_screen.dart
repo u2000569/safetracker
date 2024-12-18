@@ -43,7 +43,34 @@ class ActivityScreen extends StatelessWidget {
                     onTap: () {
                       Get.to(AttendanceScreen());
                     },
-                  )
+                  ),
+                  const SizedBox(height: SSizes.spaceBtwItems),
+                  _buildActivityCard(
+                    context,
+                    icon: Icons.error,
+                    title: 'Emergency',
+                    onTap: () {
+                      // Get.toNamed(SRoutes.assignments);
+                    },
+                  ),
+                  const SizedBox(height: SSizes.spaceBtwItems),
+                  _buildActivityCard(
+                    context,
+                    icon: Icons.note,
+                    title: 'Hall Pass',
+                    onTap: () {
+                      // Get.toNamed(SRoutes.assignments);
+                    },
+                  ),
+                  const SizedBox(height: SSizes.spaceBtwItems),
+                  _buildActivityCard(
+                    context,
+                    icon: Icons.time_to_leave,
+                    title: 'Dismissal',
+                    onTap: () {
+                      // Get.toNamed(SRoutes.assignments);
+                    },
+                  ),
                 ],
               ),
             ),

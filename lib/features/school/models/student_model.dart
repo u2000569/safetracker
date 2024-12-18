@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../utils/constants/enums.dart';
 import '../../../utils/helpers/helper_functions.dart';
+import '../../../utils/logging/logger.dart';
 import '../../personalization/models/user_model.dart';
 import 'grade_model.dart';
 
@@ -12,7 +13,6 @@ class StudentModel{
   // final double age;
   final DateTime attendanceDate;
   StudentStatus status;
- 
   String thumbnail;
   String name; // same as title product
   GradeModel? grade;
@@ -24,7 +24,7 @@ class StudentModel{
     this.userId = '', 
     required this.attendanceDate,
     required this.status,
-    required this.thumbnail,
+    this.thumbnail = '',
     required this.name,
     this.grade,
     this.parent,
@@ -67,7 +67,7 @@ class StudentModel{
     if (data == null) {
       return StudentModel.empty();
     }
-
+    SLoggerHelper.info("Mapping Firestore document to StudentModel: ${data['name'] ?? ''}");
     return StudentModel(
       docId: snapshot.id,
       id: data.containsKey('id') ? data['id'] as String : '',

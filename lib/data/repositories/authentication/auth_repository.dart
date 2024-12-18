@@ -5,14 +5,12 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:safetracker/data/repositories/user/user_repository.dart';
 import 'package:safetracker/routes/routes.dart';
 import 'package:safetracker/utils/exceptions/firebase_exceptions.dart';
-import 'package:safetracker/utils/local_storage/storage_utility.dart';
 import 'package:safetracker/utils/logging/logger.dart';
-
 import '../../../features/authentication/screens/login/login.dart';
-import '../../../home_menu.dart';
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
@@ -46,6 +44,8 @@ class AuthenticationRepository extends GetxController {
     _firebaseUser = Rx<User?>(_auth.currentUser);
     _firebaseUser.bindStream(_auth.userChanges());
     FlutterNativeSplash.remove();
+    // OneSignal.login(getUserId);
+    SLoggerHelper.info('$getUserId is logged in with One SIgnal');
     // _auth.setPersistence(Persistence.LOCAL);
     screenRedirect();
   }

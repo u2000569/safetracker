@@ -1,12 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:safetracker/features/authentication/screens/login/login.dart';
-import 'package:safetracker/features/personalization/screens/profile/profile.dart';
 import 'package:safetracker/features/personalization/screens/setting/setting.dart';
-import 'package:safetracker/screens/profilescreen.dart';
 import 'package:safetracker/utils/constants/colors.dart';
 import 'package:safetracker/utils/helpers/helper_functions.dart';
 import 'package:safetracker/utils/logging/logger.dart';
@@ -15,6 +10,7 @@ import 'data/repositories/user/user_repository.dart';
 import 'features/personalization/controllers/user_controller.dart';
 import 'features/school/screens/activity/activity_screen.dart';
 import 'features/school/screens/home/home.dart';
+import 'features/school/screens/home/home_teacher.dart';
 
 class HomeMenu extends StatelessWidget {
   const HomeMenu({super.key});
@@ -78,7 +74,7 @@ class AppScreenController extends GetxController {
 
       if (userRole.roles == 'teacher') {
         screens.assignAll([
-          const HomeScreen(),
+          const HomeTeacherScreen(),
           const ActivityScreen(),
           const SettingsScreen(),
         ]);

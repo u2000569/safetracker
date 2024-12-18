@@ -74,9 +74,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 
               ),
-              const SizedBox(height: SSizes.spaceBtwItems),
-              TextButton(onPressed: () => controller.logout(), child: const Text('Logout', style: TextStyle(color: Colors.red,))
-              ),
             ],
           ),
         ),

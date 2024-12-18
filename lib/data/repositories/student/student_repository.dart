@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 
 import '../../../features/school/models/student_model.dart';
@@ -13,6 +17,7 @@ class StudentRepository extends GetxController {
   static StudentRepository get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
+  final _firebaseStorage = FirebaseStorage.instance;
 
   /*--------------------------------- FUCNTIONS ---------------------------------*/
 
@@ -167,6 +172,24 @@ class StudentRepository extends GetxController {
     }
   }
 
+  /// Update any field in specific Users Collection
+  Future<void> updateSingleField(String studentId, Map<String, dynamic> json) async {
+    try {
+      if(studentId.isEmpty || json.isEmpty){
+        SLoggerHelper.warning('Invalid input: Document ID or JSON data is empty');
+      }
+      await _db.collection("Students").doc(studentId).update(json);
+    } on FirebaseException catch (e) {
+      throw SFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const SFormatException();
+    } on PlatformException catch (e) {
+      throw SPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
   Future<void> updateStudentAttendance(String studentId,{
     required String status,
     required DateTime timestamp,
@@ -205,6 +228,43 @@ class StudentRepository extends GetxController {
     } catch (e) {
       SLoggerHelper.error('Error fetching student by id: $e');
       return null;
+    }
+  }
+
+  // fetch studentparent
+  Future<StudentModel?> fetchStudentParent(String parentEmail) async{
+    try{
+      final studentDoc = await _db.collection('Students').where('Parent.Email', isEqualTo: parentEmail).get();
+      
+      if(studentDoc.docs.isEmpty){
+        SLoggerHelper.warning('Student Parent not found : $parentEmail');
+        return null;
+      }
+      SLoggerHelper.info('Student Parent Data: ${studentDoc.docs.first.data()}');
+      return StudentModel.fromSnapshot(studentDoc.docs.first);
+
+    } catch (e){
+      SLoggerHelper.error('Error fetching student parent: $e');
+      return null;
+    }
+  }
+
+  ///Upload student profile picture
+  Future<String> uploadImage(String path, XFile image) async{
+    try {
+      final ref = _firebaseStorage.ref(path).child(image.name);
+      await ref.putFile(File(image.path));
+      final url = await ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      throw SFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const SFormatException();
+    } on PlatformException catch (e) {
+      throw SPlatformException(e.code).message;  
+    } catch (e) {
+      SLoggerHelper.error('Something went wrong. Please try again');
+      throw 'Something went wrong to upload student profile. Please try again';
     }
   }
 

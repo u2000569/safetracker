@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:safetracker/data/repositories/authentication/auth_repository.dart';
 import 'package:safetracker/features/personalization/models/user_model.dart';
 import 'package:safetracker/utils/exceptions/platform_exceptions.dart';
@@ -146,6 +148,57 @@ class UserRepository extends GetxController {
       throw SPlatformException(e.code).message;
     } catch (e) {
       throw 'Something went wrong. Please try again';
+    }
+  }
+
+  // Save the current user's OneSignal Id
+  Future<void> saveOneSignalId() async{
+    try {
+      // get the current user's UID firestore document
+      final user = FirebaseAuth.instance.currentUser;
+      if(user == null) return;
+
+      // get the current device's OneSignal Id
+      final oneSignalId = await OneSignal.User.getOnesignalId();
+
+      if(oneSignalId != null){
+        // save the OneSignal Id to the user's document
+        await _db.collection('Users').doc(user.uid).update({
+          'OneSignalId': oneSignalId
+        });
+        SLoggerHelper.info('OneSignal Id saved : $oneSignalId');
+      } else{
+        SLoggerHelper.error('OneSignal Id not found');
+      }
+    } catch (e) {
+      SLoggerHelper.error('Error Saving OneSignal Id: $e');
+    }
+  }
+
+  // fetch the onesignal id (OneSignalId) of a user
+  Future<String?> fetchOneSignalId() async{
+    try {
+      final userId = AuthenticationRepository.instance.getUserId;
+      SLoggerHelper.info('userId: $userId');
+
+      final userDoc = await _db.collection('Users').doc(userId).get();
+      SLoggerHelper.info('User Document: ${userDoc.data()}');
+      if (userDoc.exists) {
+        final oneSignalId = userDoc.data()?['OneSignalId'] as String?;
+        if(oneSignalId != null && oneSignalId.isNotEmpty){
+          SLoggerHelper.info('OneSignal Id found: $oneSignalId');
+          return oneSignalId;
+        }else{
+          SLoggerHelper.warning('OneSignal Id not found for user: $userId');
+          return null;
+        }
+      } else{
+        SLoggerHelper.warning('User Document not found for user: $userId');
+        return null;
+      }
+    } catch (e) {
+      SLoggerHelper.error('Error fetching OneSignal Id: $e');
+      return null;
     }
   }
 }

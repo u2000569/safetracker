@@ -1,19 +1,24 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:safetracker/api/firebase_api.dart';
+import 'package:safetracker/api/notification_service.dart';
 import 'package:safetracker/app.dart';
 import 'package:safetracker/data/repositories/authentication/auth_repository.dart';
-import 'package:safetracker/screens/authentication/forgetpassword.dart';
-import 'package:safetracker/screens/authentication/usersignin.dart';
-import 'package:safetracker/screens/homescreen.dart';
-import 'package:safetracker/screens/wrapper.dart';
+import 'package:safetracker/data/repositories/user/user_repository.dart';
+import 'package:safetracker/utils/logging/logger.dart';
 import 'firebase_options.dart';
-import 'model/newuser.dart';
-import 'services/auth_services.dart';
+
+// Future _firebaseBackgroundMessage(RemoteMessage message) async{
+//   if (message.notification != null) {
+//     SLoggerHelper.info('Notification in background: ${message.notification!.body}');
+//   }
+// }
 
 Future<void> main() async{
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +36,29 @@ Future<void> main() async{
   ).then(
     (FirebaseApp value) =>  Get.put(AuthenticationRepository()),
     );
+  // await FirebaseApi().initNotifications();
+
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize('eb7001b9-f6a1-4ee9-b7b2-2d738e6897e6');
+  OneSignal.Notifications.requestPermission(true);
+
+  await UserRepository().saveOneSignalId();
+  
+
+  // await PushNotifications.init();
+
+  // await PushNotifications.localNotiInt();
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
+
+  // // on background notification tapped
+  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  //   if(message.notification != null){
+  //     SLoggerHelper.info('Background Notification tapped: ${message.notification!.body}');
+
+  //   }
+  // });
+
 
     runApp(const App());
   // try {

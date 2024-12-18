@@ -40,25 +40,25 @@ class AttendanceScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Obx(() {
-                if (gradeController.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: gradeController.allGrades.length,
-                    itemBuilder: (context, index) {
-                      final grade = gradeController.allGrades[index];
-                      return ListTile(
-                        title: Text(grade.name),
-                        subtitle: Text(grade.studentsCount.toString()),
-                      );
-                    },
-                  );
-                }
-              }),
+              // const SizedBox(height: 20),
+              // Obx(() {
+              //   if (gradeController.isLoading.value) {
+              //     return const Center(child: CircularProgressIndicator());
+              //   } else {
+              //     return ListView.builder(
+              //       shrinkWrap: true,
+              //       physics: const NeverScrollableScrollPhysics(),
+              //       itemCount: gradeController.allGrades.length,
+              //       itemBuilder: (context, index) {
+              //         final grade = gradeController.allGrades[index];
+              //         return ListTile(
+              //           title: Text(grade.name),
+              //           subtitle: Text(grade.studentsCount.toString()),
+              //         );
+              //       },
+              //     );
+              //   }
+              // }),
               const SizedBox(height: SSizes.spaceBtwItems),
               // table body
               Obx((){

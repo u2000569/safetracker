@@ -24,28 +24,28 @@ class StudentRows extends DataTableSource {
         DataCell(
           Row(
             children: [
-              SRoundedImage(
-                width: 50,
-                height: 50,
-                padding: const EdgeInsets.all(SSizes.xs),
-                imageUrl: student.thumbnail,
-                borderRadius: SSizes.borderRadiusMd,
-                backgroundColor: SColors.primaryBackground,
-              ),
+              // SRoundedImage(
+              //   width: 50,
+              //   height: 50,
+              //   padding: const EdgeInsets.all(SSizes.xs),
+              //   imageUrl: student.thumbnail,
+              //   borderRadius: SSizes.borderRadiusMd,
+              //   backgroundColor: SColors.primaryBackground,
+              // ),
               const SizedBox(width: SSizes.spaceBtwItems),
               Flexible(child: Text(student.name, style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: SColors.primary),)),
             ],
           )
         ),
-        DataCell(
-          Row(
-            children: [
-              Flexible(
-                child: Text(student.id, style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: SColors.textPrimary),)
-              )
-            ],
-          )
-          ),
+        // DataCell(
+        //   Row(
+        //     children: [
+        //       Flexible(
+        //         child: Text(student.id, style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: SColors.textPrimary),)
+        //       )
+        //     ],
+        //   )
+        //   ),
         DataCell(
           Row(
             children: [

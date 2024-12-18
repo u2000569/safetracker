@@ -12,6 +12,7 @@ class UserModel {
   String profilePicture;
   final AppRole role;
   String roles;
+  String oneSignalId;
 
   // List<AddressModel>? addresses;
 
@@ -25,6 +26,7 @@ class UserModel {
     this.profilePicture = '',
     this.role = AppRole.user,
     this.roles = '',
+    this.oneSignalId = '',
   }); 
 
   /// Helper function to get the full name.
@@ -84,7 +86,8 @@ class UserModel {
       phoneNumber: data['PhoneNumber'] ?? '',
       profilePicture: data['ProfilePicture'] ?? '',
       roles: data['Role'] ?? '',
-      role: userRole
+      role: userRole,
+      oneSignalId: data['OneSignalId'] ?? '',
       // createdAt: data['CreatedAt']?.toDate() ?? DateTime.now(),
       // updatedAt: data['UpdatedAt']?.toDate() ?? DateTime.now(),
     );
