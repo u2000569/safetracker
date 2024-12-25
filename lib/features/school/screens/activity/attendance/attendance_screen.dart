@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:googleapis/calendar/v3.dart';
 import 'package:safetracker/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:safetracker/common/widgets/loaders/loading_animate.dart';
 import 'package:safetracker/features/school/controllers/grade_controller.dart';
 import 'package:safetracker/features/school/screens/activity/attendance/widgets/nfc_screen.dart';
+import 'package:safetracker/utils/constants/colors.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
-import 'package:safetracker/utils/popups/loader.dart';
 
 import '../../../controllers/student/student_controller.dart';
 import 'students_table/students_table.dart';
@@ -22,65 +24,84 @@ class AttendanceScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Attendance'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => Get.to(() => NFCscreen(action: 'check in',)),
-                    child: const Text('Check In'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Get.to(() => NFCscreen(action: 'check out',)),
-                    child: const Text('Check Out'),
-                  ),
-                ],
-              ),
-              // const SizedBox(height: 20),
-              // Obx(() {
-              //   if (gradeController.isLoading.value) {
-              //     return const Center(child: CircularProgressIndicator());
-              //   } else {
-              //     return ListView.builder(
-              //       shrinkWrap: true,
-              //       physics: const NeverScrollableScrollPhysics(),
-              //       itemCount: gradeController.allGrades.length,
-              //       itemBuilder: (context, index) {
-              //         final grade = gradeController.allGrades[index];
-              //         return ListTile(
-              //           title: Text(grade.name),
-              //           subtitle: Text(grade.studentsCount.toString()),
-              //         );
-              //       },
-              //     );
-              //   }
-              // }),
-              const SizedBox(height: SSizes.spaceBtwItems),
-              // table body
-              Obx((){
-                // show loader
-                if(studentController.isLoading.value) return const SLoadingAnimate();
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const SizedBox(height: SSizes.spaceBtwItems),
+                Expanded(
+                  child: Obx(() {
+                    // Show loader or table
+                    if (studentController.isLoading.value) {
+                      return const SLoadingAnimate();
+                    }
 
-                return const SRoundedContainer(
-                  child: Column(
-                    children: [
-                      // Table Header
-
-                      StudentsTable(),
-                    ],
-                  ),
-                );
-
-              }
-              )
-
-            ],
+                    return const SRoundedContainer(
+                      child: Column(
+                        children: [
+                          // Table Header
+                          Expanded(child: StudentsTable()), // Constrain the table height
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 80), // Add space for the floating buttons
+              ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 16.0,
+            left: 16.0,
+            right: 16.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.check_circle_outline_rounded),
+                  onPressed: () {
+                    HapticFeedback.heavyImpact();
+                    Get.to(() => NFCscreen(action: 'check in'));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: SColors.buttonPrimary,
+                    padding: const EdgeInsets.all(20.0),
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    side: const BorderSide(color: SColors.white, width: 2),
+                    elevation: 5,
+                    shape: const StadiumBorder(),
+                  ),
+                  label: const Text('Check In'),
+                ),
+                const SizedBox(width: SSizes.spaceBtwItems),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.exit_to_app, color: SColors.primary,),
+                  onPressed: () => Get.to(() => NFCscreen(action: 'check out')),
+                  
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: SColors.white,
+                    padding: const EdgeInsets.all(20.0),
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    side: const BorderSide(color: SColors.primary, width: 2),
+                    elevation: 5,
+                    shape: const StadiumBorder(),
+                  ),
+                  label: const Text('Check Out', style: TextStyle(
+                    color: SColors.primary
+                  ),),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

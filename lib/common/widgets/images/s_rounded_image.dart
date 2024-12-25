@@ -49,7 +49,7 @@ class SRoundedImage extends StatelessWidget {
                   fit: fit,
                   imageUrl: imageUrl,
                   progressIndicatorBuilder: (context, url, downloadProgress) => SShimmerEffect(width: width ?? double.infinity, height: height ?? 158),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  errorWidget: (context, url, error) => const Icon(Icons.photo_size_select_actual_rounded),
                 )
               : Image(
                   fit: fit,

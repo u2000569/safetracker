@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safetracker/data/repositories/student/student_repository.dart';
 import 'package:safetracker/features/school/controllers/student/student_controller.dart';
-import 'package:safetracker/features/school/screens/home/home.dart';
+import 'package:safetracker/home_menu.dart';
 import 'package:safetracker/utils/constants/image_strings.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 import 'package:safetracker/utils/popups/full_screen_loader.dart';
@@ -58,7 +58,7 @@ class UpdateStudentNameController extends GetxController {
 
       // Show Success Message
       SLoaders.successSnackBar(title: 'Success', message: 'Your information has been updated successfully');
-      Get.off(() => const HomeScreen());
+      Get.off(() => const HomeMenu());
     } catch (e) {
       SFullScreenLoader.stopLoading();
       SLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());

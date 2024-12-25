@@ -55,5 +55,7 @@
 		<string>We need access to NFC to read and write data on NFC tags.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>We need your location to fetch the current address.</string>
 	</dict>
 </plist>

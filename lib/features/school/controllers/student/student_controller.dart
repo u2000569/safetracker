@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safetracker/data/repositories/student/student_repository.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 import 'package:safetracker/utils/popups/loader.dart';
 
 import '../../../../data/abstract/base_data_table_controller.dart';
+import '../../../../home_menu.dart';
 import '../../models/student_model.dart';
 
 class StudentController extends SBaseController<StudentModel> {
@@ -30,6 +33,7 @@ class StudentController extends SBaseController<StudentModel> {
     try {
       SLoggerHelper.info("Initializing StudentController...");
       fetchFeaturedStudents();
+      fetchStudentForParent(studentParent.value!.parent!.email);
     } catch (e) {
       SLoggerHelper.error("Error during initialization: $e");
     }
@@ -115,26 +119,47 @@ class StudentController extends SBaseController<StudentModel> {
   }
 
   // Upload Student Picture
-  uploadStudentProfilePicture(String studentId) async{
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 80, maxHeight: 512, maxWidth: 512);
-      if(image != null){
-        imageUploading.value = true;
-        final uploadedImage = await studentRepository.uploadImage('Users/Images/Profile/', image);
-        profileImageUrl.value = uploadedImage;
-        Map<String, dynamic> newImage = {'thumbnail': uploadedImage};
-        await studentRepository.updateSingleField(studentId ,newImage);
-        student.value.thumbnail = uploadedImage;
-        student.refresh();
+  uploadStudentProfilePicture(String studentDocId) async {
+  try {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxHeight: 512,
+      maxWidth: 512,
+    );
 
-        imageUploading.value = false;
-        SLoaders.successSnackBar(title: 'Congratulations', message: 'student profile picture has been updated successfully.');
-      } 
-    } catch (e) {
-      imageUploading.value = false;
-      SLoaders.errorSnackBar(title: 'OhSnap', message: 'Cannot upload picture. Something went wrong: $e');
+    if (image == null) {
+      SLoaders.errorSnackBar(title: 'No Image Selected', message: 'Please select an image to upload.');
+      return;
     }
+
+    imageUploading.value = true;
+
+    final storagePath = 'Users/Images/Profile/$studentDocId.jpg';
+    final storageRef = FirebaseStorage.instance.ref().child(storagePath);
+    final uploadTask = await storageRef.putFile(File(image.path));
+    final uploadedImageUrl = await uploadTask.ref.getDownloadURL();
+
+    await studentRepository.updateSingleField(studentDocId, {'thumbnail': uploadedImageUrl});
+
+    // Update the student object and refresh
+    student.value.thumbnail = uploadedImageUrl;
+    SLoggerHelper.info('Picture Link: $uploadedImageUrl');
+    student.refresh(); // Refresh the state to notify observers
+
+    imageUploading.value = false;
+    SLoaders.successSnackBar(
+      title: 'Success',
+      message: 'Student profile picture updated successfully!',
+    );
+    Get.off(() => const HomeMenu());
+  } catch (e) {
+    SLoaders.errorSnackBar(title: 'Error', message: 'Failed to upload picture: $e');
+  } finally {
+    imageUploading.value = false;
   }
+}
+
 
   @override
   Future<List<StudentModel>> fetchItems() async{

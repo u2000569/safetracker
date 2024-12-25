@@ -11,7 +11,6 @@ import 'package:safetracker/utils/constants/sizes.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 
 import '../../../../common/widgets/texts/section_heading.dart';
-import '../../../personalization/screens/profile/change_name.dart';
 import '../../../personalization/screens/profile/widgets/profile_menu.dart';
 
 class StudentProfileScreen extends StatelessWidget {
@@ -23,6 +22,7 @@ class StudentProfileScreen extends StatelessWidget {
 
   @override
 Widget build(BuildContext context) {
+  
   final studentController = StudentController.instance;
 
   // Fetch student data if not already fetched
@@ -51,16 +51,19 @@ Widget build(BuildContext context) {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    SCircularImage(
-                      image: student!.thumbnail.isNotEmpty ? student.thumbnail : SImages.user,
-                      width: 80,
-                      height: 80,
-                      isNetworkImage: student.thumbnail.isNotEmpty,
+                    Obx(
+                      () {
+                        final networkImage = student!.thumbnail;
+                        final image = networkImage.isNotEmpty ? networkImage : SImages.user;
+                        return studentController.imageUploading.value
+                            ? const SShimmerEffect(width: 80, height: 80, radius: 80)
+                            : SCircularImage(image: image, width: 80, height: 80, isNetworkImage: networkImage.isNotEmpty);
+                      }
                     ),
                     TextButton(
                       onPressed: studentController.imageUploading.value
-                          ? null
-                          : () => studentController.uploadStudentProfilePicture(studentId.id),
+                          ? () {}
+                          : () => studentController.uploadStudentProfilePicture(studentId.docId),
                       child: const Text('Change Student Profile Picture'),
                     )
                   ],
@@ -69,7 +72,8 @@ Widget build(BuildContext context) {
               const SizedBox(height: SSizes.spaceBtwItems),
               const Divider(),
               const SSectionHeading(title: 'Student Information', showActionButton: false),
-              SProfileMenu(title: 'Name', value: student.name,onPressed: () => Get.to(() => const ChangeStudentName()),),
+              SProfileMenu(title: 'Name', value: student!.name,onPressed: () => Get.to(() => const ChangeStudentName()),),
+              // SProfileMenu(title: 'Adress', value: student.address,onPressed: () => Get.to(() => const ChangeStudentAddress()),),
               SProfileMenu(title: 'ID Number', value: student.id ,onPressed: () {
                 
               },),

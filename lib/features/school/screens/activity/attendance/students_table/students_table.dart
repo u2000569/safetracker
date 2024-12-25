@@ -17,6 +17,7 @@ class StudentsTable extends StatelessWidget {
         // table
         return SPaginatedDataTable(
           minWidth: 100,
+          
           sortAscending: controller.sortAscending.value,
           sortColumnIndex: controller.sortColumnIndex.value,
           columns: [

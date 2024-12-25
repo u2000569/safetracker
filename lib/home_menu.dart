@@ -18,21 +18,42 @@ class HomeMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AppScreenController());
+
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: Obx(
-        () => NavigationBar(
+      bottomNavigationBar: Obx(() {
+        // Show a CircularProgressIndicator while destinations are being loaded
+        if (controller.navigationDestinations.isEmpty) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return NavigationBar(
           height: 80,
           animationDuration: const Duration(seconds: 3),
           selectedIndex: controller.selectedMenu.value,
-          backgroundColor: SHelperFunctions.isDarkMode(context) ? SColors.black : Colors.white,
+          backgroundColor: SHelperFunctions.isDarkMode(context)
+              ? SColors.black
+              : Colors.white,
           elevation: 0,
-          indicatorColor: SHelperFunctions.isDarkMode(context) ? SColors.white.withOpacity(0.1) : SColors.black.withOpacity(0.1),
+          indicatorColor: SHelperFunctions.isDarkMode(context)
+              ? SColors.white.withOpacity(0.1)
+              : SColors.black.withOpacity(0.1),
           onDestinationSelected: (index) => controller.selectedMenu.value = index,
-          destinations: controller.getNavigationDestinations(),
-          )
-      ),
-      body: Obx(() => controller.screens[controller.selectedMenu.value]),
+          destinations: controller.navigationDestinations,
+        );
+      }),
+      body: Obx(() {
+        // Show a CircularProgressIndicator while screens are being loaded
+        if (controller.screens.isEmpty) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return controller.screens[controller.selectedMenu.value];
+      }),
     );
   }
 
@@ -49,11 +70,13 @@ class AppScreenController extends GetxController {
     @override
     void onInit(){
       super.onInit();
+      _setupScreensAndDestinations();
       // Ensure UserController is available
       if (!Get.isRegistered<UserController>()) {
         Get.put(UserController());
       }
-      _setupScreensAndDestinations();
+
+      // _setupScreensAndDestinations();
     }
 
     void _setupScreensAndDestinations() async{
@@ -98,11 +121,4 @@ class AppScreenController extends GetxController {
     }
     List<NavigationDestination> getNavigationDestinations() => navigationDestinations;
 
-    // final screens = [
-    //   const HomeScreen(),
-    //   // const SettingsScreen(),
-    //   const ActivityScreen(),
-    //   const SettingsScreen(),
-    //   // const OldProfileScreen()
-    // ];
 }

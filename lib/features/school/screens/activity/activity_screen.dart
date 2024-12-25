@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:safetracker/common/widgets/custom_shapes/containers/primary_header_container.dart';
 import 'package:safetracker/features/school/screens/activity/attendance/attendance_screen.dart';
+import 'package:safetracker/features/school/screens/activity/emergency/emergency_screen.dart';
 import 'package:safetracker/features/school/screens/activity/widget_activity/activity_appbar.dart';
 import 'package:safetracker/utils/constants/colors.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
@@ -50,7 +51,7 @@ class ActivityScreen extends StatelessWidget {
                     icon: Icons.error,
                     title: 'Emergency',
                     onTap: () {
-                      // Get.toNamed(SRoutes.assignments);
+                      Get.to(const EmergencyScreen());
                     },
                   ),
                   const SizedBox(height: SSizes.spaceBtwItems),

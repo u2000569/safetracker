@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -40,6 +41,15 @@ class SLoaders {
       margin: const EdgeInsets.all(10),
       icon: const Icon(Iconsax.check, color: SColors.white),
     );
+    // SnackBar(
+    //   content: AwesomeSnackbarContent(
+    //     title: title,
+    //     message: message, 
+    //     contentType: ContentType.success,
+    //     messageTextStyle: const TextStyle(color: Colors.white),
+    //     titleTextStyle: const TextStyle(color: Colors.white),
+    //   ),
+    // );
   }
 
   static warningSnackBar({required title, message = ''}) {

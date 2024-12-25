@@ -78,7 +78,8 @@ class SSortableStudentList extends StatelessWidget {
       children: [
         Row(
           children: [
-            Obx(
+            Expanded(
+              child: Obx(
               () => Expanded(
                 child: DropdownButtonFormField(
                   isExpanded: true,
@@ -88,7 +89,7 @@ class SSortableStudentList extends StatelessWidget {
                     //Sort students based on selected option
                     controller.sortStudents(value!);
                   },
-                  items: ['Name', 'Grade'].map((option){
+                  items: ['name', 'Grade'].map((option){
                     return DropdownMenuItem<String>(
                       value: option,
                       child: Text(option),
@@ -97,6 +98,8 @@ class SSortableStudentList extends StatelessWidget {
                 )
               )
             ),
+            )
+            
           ],
         ),
         const SizedBox(height: SSizes.spaceBtwSections),

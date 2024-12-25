@@ -52,6 +52,7 @@ class UserController extends GetxController {
       }
     });
     UserRepository().saveOneSignalId();
+    UserRepository().setExternalId(user.value.id ?? '');
     super.onInit();
     
   }
@@ -63,6 +64,7 @@ class UserController extends GetxController {
       loading.value = true;
       
       final userRole = await userRepository.fetchUserRole();
+
       SLoggerHelper.debug('User Role: $userRole');
 
       if(user.value.id == null || user.value.id!.isEmpty){
@@ -153,6 +155,7 @@ class UserController extends GetxController {
         profileImageUrl.value = uploadedImage;
         Map<String, dynamic> newImage = {'ProfilePicture': uploadedImage};
         await userRepository.updateSingleField(newImage);
+        await parentRepository.updateSingleField(newImage);
         user.value.profilePicture = uploadedImage;
         user.refresh();
 

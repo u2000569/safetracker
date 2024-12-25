@@ -58,4 +58,19 @@ class ParentRepository extends GetxController {
       throw 'Something went wrong. Please try again later';
     }
   }
+
+  /// Update any field in specific Users Collection
+  Future<void> updateSingleField(Map<String, dynamic> json) async {
+    try {
+      await _db.collection("Parent").doc(AuthenticationRepository.instance.getUserId).update(json);
+    } on FirebaseException catch (e) {
+      throw SFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const SFormatException();
+    } on PlatformException catch (e) {
+      throw SPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
 }

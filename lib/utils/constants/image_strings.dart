@@ -50,6 +50,10 @@ class SImages {
   static String loadingJuggleAnimation = "assets/images/animations/141397-loading-juggle.json";
   static String cloudUploadingAnimation = "assets/images/animations/cloud-uploading-animation.json";
   static String loaderAnimation = "assets/images/animations/loader-animation.json";
+  // new animation
+  static String loadingAnimation = "assets/images/animations/loadingAnimation.json";
+  static String tapNFC = "assets/images/animations/tapNFC.json";
+  static String checkSuccess = "assets/images/animations/checkSuccess.json";
 
   // -- OnBoarding Texts
   static const String onBoardingImage1 = "assets/images/on_boarding_images/sammy-line-searching.gif";

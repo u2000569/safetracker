@@ -166,6 +166,7 @@ class AuthenticationRepository extends GetxController {
       // await GoogleSignIn().signOut();
       // await FacebookAuth.instance.logOut();
       await FirebaseAuth.instance.signOut();
+      OneSignal.logout();
       Get.offAll(() => const LoginScreen());
     } on FirebaseAuthException catch (e) {
       throw SFirebaseAuthException(e.code).message;

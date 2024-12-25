@@ -45,35 +45,39 @@ class SStudentCardVertical extends StatelessWidget {
           children: [
             /// Thumbnail
             SRoundedContainer(
-              height: 180,
-              width: 180,
+              height: SSizes.productItemHeight,
+              width: double.infinity,
               padding: const EdgeInsets.all(SSizes.sm),
               backgroundColor: dark ? SColors.dark: SColors.white,
-              child: Stack(
+              child: Row(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.all(SSizes.sm),
+                    child: SRoundedImage(imageUrl: student.thumbnail, applyImageRadius: true, isNetworkImage: isNetworkImage)
+                  ,
+                  ),
                   /// Thumbnail Image
-                  Center(child: SRoundedImage(imageUrl: student.thumbnail, applyImageRadius: true, isNetworkImage: isNetworkImage)
+                  
+                  const SizedBox(height: SSizes.spaceBtwItems,),
+                  Padding(
+                    padding: const EdgeInsets.only(left : SSizes.xl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SStudentNameText(name: student.name, smallSize: true),
+                        const SizedBox(height: SSizes.spaceBtwItems/2),
+                        SGradeNameWithVerifiedIcon(title: student.grade!.name, gradeTextSize: TextSizes.small),
+                        const SizedBox(height: SSizes.spaceBtwItems/2),
+                        SStatus(title: student.studentStatusText, gradeTextSize: TextSizes.small),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: SSizes.spaceBtwItems/2),
             /// Details
-            Padding(
-              padding: const EdgeInsets.only(left : SSizes.sm),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SStudentNameText(name: student.name, smallSize: true),
-                  const SizedBox(height: SSizes.spaceBtwItems/2),
-                  SGradeNameWithVerifiedIcon(title: student.grade!.name, gradeTextSize: TextSizes.small),
-                  const SizedBox(height: SSizes.spaceBtwItems/2),
-                  SStatus(title: student.studentStatusText, gradeTextSize: TextSizes.small),
-                  const SizedBox(height: SSizes.spaceBtwItems/2),
-                  SStatus(title: student.parent!.email , gradeTextSize: TextSizes.small),
-                ],
-              ),
-            )
+            
 
           ],
         ),

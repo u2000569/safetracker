@@ -39,7 +39,7 @@ class SCircularImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
-        child: Center(
+        child: ClipOval(
           child: isNetworkImage
               ? CachedNetworkImage(
                   fit: fit,

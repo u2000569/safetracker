@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:safetracker/data/repositories/user/user_repository.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 
 import '../../../features/personalization/models/user_model.dart';
@@ -43,6 +45,14 @@ class TeacherRepository extends GetxController {
 
       final documentSnapshot = await _db.collection('Teacher').doc(userId).get();
       if(documentSnapshot.exists){
+        String? role = documentSnapshot.get('Role');
+        SLoggerHelper.debug('Set a Tag for Role: $role');
+        if(role != null){
+          // Set the tag in OneSignal
+          OneSignal.User.addTagWithKey("Role", role);
+        }else{
+          SLoggerHelper.warning("Role field is missing: $role");
+        }
         SLoggerHelper.debug('Document data: ${documentSnapshot.data()}');
         return UserModel.fromSnapshot(documentSnapshot);
       } else {

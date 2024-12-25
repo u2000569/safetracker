@@ -175,6 +175,16 @@ class UserRepository extends GetxController {
     }
   }
 
+  // Set External ID for OneSignal
+  Future<void> setExternalId(String externalId) async{
+    try {
+      await OneSignal.User.addAlias(externalId, externalId);
+      SLoggerHelper.info("External Id set: $externalId");
+    } catch (e) {
+      SLoggerHelper.error("Error setting External Id: $e");
+    }
+  }
+
   // fetch the onesignal id (OneSignalId) of a user
   Future<String?> fetchOneSignalId() async{
     try {

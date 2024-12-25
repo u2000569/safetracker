@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:safetracker/data/repositories/authentication/auth_repository.dart';
 import 'package:safetracker/features/personalization/models/user_model.dart';
 import 'package:safetracker/utils/constants/enums.dart';
@@ -93,6 +94,9 @@ class LoginController extends GetxController {
         SLoggerHelper.info('Role : ${teacherData.roles}');
             if (teacherData.roles == 'teacher') {
             SLoggerHelper.info('Teacher Logged in');
+            // Login OneSignal External ID
+            OneSignal.login(teacherData.id!);
+            SLoggerHelper.info('OneSignal External ID: ${teacherData.id}');
             AuthenticationRepository.instance.screenRedirect();
           } else {
             SLoggerHelper.warning('Teacher role not found or incorrect');
@@ -105,6 +109,9 @@ class LoginController extends GetxController {
         SLoggerHelper.info('Role : ${parentData.role}');
         if (parentData.roles == 'parent') {
           SLoggerHelper.info('Parent Logged in');
+          // Login OneSignal External ID
+          OneSignal.login(parentData.id!);
+          SLoggerHelper.info('OneSignal External ID: ${parentData.id}');
           AuthenticationRepository.instance.screenRedirect();
         } else {
           SLoggerHelper.warning('Parent role not found or incorrect');

@@ -64,16 +64,16 @@ class SettingsScreen extends StatelessWidget {
                     SSettingsMenuTile(icon: Iconsax.notification, title: 'Notifications', subTitle: 'Set the notification', onTap: (){},),
 
                     // App Settings
-                    const SizedBox(height: SSizes.spaceBtwSections),
-                    const SSectionHeading(title: 'App Settings', showActionButton: false),
-                    const SizedBox(height: SSizes.spaceBtwItems),
+                    // const SizedBox(height: SSizes.spaceBtwSections),
+                    // const SSectionHeading(title: 'App Settings', showActionButton: false),
+                    // const SizedBox(height: SSizes.spaceBtwItems),
 
-                    SSettingsMenuTile(
-                      icon: Iconsax.document_upload,
-                      title: 'Load Data',
-                      subTitle: 'Upload Data to your Cloud Firebase',
-                      onTap: (){},
-                    ),
+                    // SSettingsMenuTile(
+                    //   icon: Iconsax.document_upload,
+                    //   title: 'Load Data',
+                    //   subTitle: 'Upload Data to your Cloud Firebase',
+                    //   onTap: (){},
+                    // ),
 
                     /// Logout Button
                     const SizedBox(height: SSizes.spaceBtwSections),
