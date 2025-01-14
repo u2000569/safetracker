@@ -4,7 +4,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:safetracker/data/repositories/authentication/auth_repository.dart';
 import 'package:safetracker/features/personalization/models/user_model.dart';
-import 'package:safetracker/utils/constants/enums.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 import 'package:safetracker/utils/popups/loader.dart';
 import '../../../data/repositories/parent/parent_repository.dart';

@@ -90,10 +90,10 @@ class SValidator {
     }
 
     // Regular expression for phone number validation (assuming a 10-digit US phone number format)
-    final phoneRegExp = RegExp(r'^\d{12}$');
+    final phoneRegExp = RegExp(r'^\d{8,}$');
 
     if (!phoneRegExp.hasMatch(value)) {
-      return 'Invalid phone number format (12 digits required).';
+      return 'Invalid phone number format (minimum 8 digits required).';
     }
 
     return null;

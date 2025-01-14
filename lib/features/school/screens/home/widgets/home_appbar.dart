@@ -51,7 +51,7 @@ class SHomeAppBar extends StatelessWidget {
                     // Display the user name
                     return Text(
                       userController.user.value.fullName,
-                      style: Theme.of(context).textTheme.headlineSmall!.apply(color: SColors.white),
+                      style: Theme.of(context).textTheme.headlineMedium!.apply(color: SColors.white),
                     );
                   }
                 }

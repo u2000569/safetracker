@@ -22,7 +22,7 @@ class NotificationController extends GetxController{
   // fetch User's Notificaiton
   Future<List<NotificationModel>> fetchUserNotification() async{
     try{
-      final userNotification = await notificationRepository.fetchUserNotification();
+      final userNotification = await notificationRepository.typeNotification();
       return userNotification;
     } catch(e){
       SLoggerHelper.error('Error fetching user notification: $e');
@@ -65,4 +65,14 @@ class NotificationController extends GetxController{
       SLoggerHelper.error('Failed to send notification: $e');
     }
   }
+
+  Future<void> markNotificationAsRead(String notificationId) async {
+  try {
+    await notificationRepository.updateNotificationStatus(notificationId, true);
+    SLoggerHelper.info('Notification marked as read: $notificationId');
+  } catch (e) {
+    SLoggerHelper.error('Failed to mark notification as read: $e');
+  }
+}
+
 }

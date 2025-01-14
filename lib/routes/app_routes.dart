@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:safetracker/features/authentication/screens/login/login.dart';
 import 'package:safetracker/features/personalization/screens/setting/setting.dart';
 import 'package:safetracker/features/school/screens/activity/activity_screen.dart';
+import 'package:safetracker/features/school/screens/activity/attendance/attendance_screen.dart';
 import 'package:safetracker/features/school/screens/activity/attendance/widgets/nfc_screen.dart';
 import 'package:safetracker/features/school/screens/home/home.dart';
 import 'package:safetracker/home_menu.dart';
@@ -19,5 +20,6 @@ class AppRoutes {
     GetPage(name: SRoutes.profile, page: () => const ProfileScreen()),
     GetPage(name: SRoutes.settings, page: () => const SettingsScreen()),
     GetPage(name: SRoutes.activity, page: () => const ActivityScreen()),
+    GetPage(name: SRoutes.attendance, page: () => AttendanceScreen()),
   ];
 }

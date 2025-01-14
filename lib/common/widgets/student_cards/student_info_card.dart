@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safetracker/common/widgets/images/s_circular_image.dart';
 import 'package:safetracker/features/school/models/student_model.dart';
 import 'package:safetracker/utils/constants/colors.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
@@ -91,6 +90,10 @@ class StudentInfoCard extends StatelessWidget {
       case StudentStatus.absent:
         statusColor = Colors.red;
         statusText = 'Absent';
+        break;
+      case StudentStatus.waiting:
+        statusColor = Colors.blue;
+        statusText = 'Waiting';
         break;
       default:
         statusColor = Colors.orange;

@@ -208,6 +208,7 @@ class StudentRepository extends GetxController {
       await _db.collection('Students').doc(studentIds).update({
         'status': status,
         'attendanceDate': timestamp,
+        'totalAmount': 1,
       });
     } catch (e) {
       throw Exception('Error updating student attendance : $e');
@@ -232,6 +233,24 @@ class StudentRepository extends GetxController {
   }
 
   // fetch studentparent
+  Future<List<StudentModel?>> fetchListStudentParent(String parentEmail) async{
+    try{
+      final studentDoc = await _db.collection('Students').where('Parent.Email', isEqualTo: parentEmail).get();
+      
+      if(studentDoc.docs.isEmpty){
+        SLoggerHelper.warning('Student Parent not found : $parentEmail');
+        return [];
+      }
+      // SLoggerHelper.info('Student Parent Data: ${studentDoc.docs.first.data()}');
+      // return StudentModel.fromSnapshot(studentDoc.docs.first);
+      return studentDoc.docs.map((doc) => StudentModel.fromSnapshot(doc)).toList();
+    } catch (e){
+      SLoggerHelper.error('Error fetching student parent: $e');
+      return [];
+    }
+  }
+
+  // fetch studentparent
   Future<StudentModel?> fetchStudentParent(String parentEmail) async{
     try{
       final studentDoc = await _db.collection('Students').where('Parent.Email', isEqualTo: parentEmail).get();
@@ -248,6 +267,38 @@ class StudentRepository extends GetxController {
       return null;
     }
   }
+
+  Future<List<StudentModel>> fetchListStudentsParent(String parentEmail) async {
+  try {
+    // Query Firestore for all students with the given parentEmail
+    final querySnapshot = await _db
+        .collection('Students')
+        .where('Parent.Email', isEqualTo: parentEmail)
+        .get();
+
+    // Check if no documents were found
+    if (querySnapshot.docs.isEmpty) {
+      SLoggerHelper.warning('No students found for parent email: $parentEmail');
+      return []; // Return an empty list if no students are found
+    }
+
+    // Convert each Firestore document into a StudentModel object
+    final students = querySnapshot.docs.map((doc) {
+      SLoggerHelper.info('Student Parent Data: ${doc.data()}');
+      return StudentModel.fromSnapshot(doc);
+    }).toList();
+
+    SLoggerHelper.info('Fetched ${students.length} students for parent: $parentEmail');
+    return students;
+  } catch (e) {
+    // Handle any errors during the query process
+    SLoggerHelper.error('Error fetching students for parent: $e');
+    return []; // Return an empty list on error
+  }
+}
+
+
+  // Future<String?> fetchStudentDocID(String )
 
   ///Upload student profile picture
   Future<String> uploadImage(String path, XFile image) async{

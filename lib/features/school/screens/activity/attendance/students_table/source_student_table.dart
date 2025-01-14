@@ -2,9 +2,9 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safetracker/utils/logging/logger.dart';
 
 import '../../../../../../common/widgets/custom_shapes/containers/rounded_container.dart';
-import '../../../../../../common/widgets/images/s_rounded_image.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/helpers/helper_functions.dart';
@@ -15,11 +15,13 @@ class StudentRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index){
+    controller.refreshTable();
     final student = controller.filteredItems[index];
+    SLoggerHelper.info('Student List : ${student.name}');
     return DataRow2(
-      selected: controller.selectedRows[index],
+      // selected: controller.selectedRows[index],
       // onTap: () => Get.toNamed(SRoutes.editStudent, arguments: student),
-      onSelectChanged: (value) => controller.selectedRows[index] = value ?? false,
+      // onSelectChanged: (value) => controller.selectedRows[index] = value ?? false,
       cells: [
         DataCell(
           Row(

@@ -1,25 +1,66 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:safetracker/api/firebase_api.dart';
-import 'package:safetracker/api/notification_service.dart';
 import 'package:safetracker/app.dart';
 import 'package:safetracker/data/repositories/authentication/auth_repository.dart';
 import 'package:safetracker/data/repositories/user/user_repository.dart';
 import 'package:safetracker/utils/logging/logger.dart';
+import 'package:workmanager/workmanager.dart';
 import 'firebase_options.dart';
 
-// Future _firebaseBackgroundMessage(RemoteMessage message) async{
-//   if (message.notification != null) {
-//     SLoggerHelper.info('Notification in background: ${message.notification!.body}');
-//   }
-// }
+void callbackDispatcher(){
+  Workmanager().executeTask((taskName, inputData) async{
+    if (taskName == 'resetStudentStatusTask') {
+      await Firebase.initializeApp();
+      final firestore = FirebaseFirestore.instance;
+      final studentCollection = firestore.collection('Students');
+      SLoggerHelper.info('Execute reset student status task');
 
+      try {
+        // Get Current Time
+        final now = DateTime.now();
+        final startSchoolTime = DateTime(now.year, now.month, now.day, 9, 0,0);
+
+        if(now.isBefore(startSchoolTime)){
+          final students = await studentCollection.get();
+          for (var student in students.docs){
+            await studentCollection
+              .doc(student.id)
+              .update({'status': 'StudentStatus.pending'});
+          }
+          SLoggerHelper.info('All students status reset to pending');
+        } else{
+          // Set status to absent for students who have not checked in
+          final students = await studentCollection.get();
+          for (var student in students.docs){
+            if(student.data()['status'] == 'StudentStatus.pending'){
+              await studentCollection
+                .doc(student.id)
+                .update({'status': 'StudentStatus.absent'});
+            }
+          }
+          SLoggerHelper.info('The student status pending reset to absent');
+        }
+        // final students = await studentCollection.get();
+        // for(var student in students.docs){
+        //   await studentCollection
+        //     .doc(student.id)
+        //     .update({'status': 'StudentStatus.pending'});
+        // }
+        return Future.value(true);
+      } catch (e) {
+        SLoggerHelper.error('Error resetting student status: $e');
+        return Future.value(false);
+      }
+    }
+    return Future.value(false);
+  });
+}
 Future<void> main() async{
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // GetX local storage
@@ -27,6 +68,15 @@ Future<void> main() async{
 
   /// Overcome from transparent spaces at the bottom in IOS
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
+  /// Initialize WorkManager
+  Workmanager().initialize( callbackDispatcher, isInDebugMode: true);
+  Workmanager().registerPeriodicTask(
+    'resetStudentStatus', 
+    'resetStudentStatusTask', 
+    frequency: const Duration(hours: 20)
+  );
+  SLoggerHelper.info('WorkManager initialized $Workmanager');
 
   /// -- Await Splash until other items Load
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -43,24 +93,10 @@ Future<void> main() async{
   OneSignal.Notifications.requestPermission(true);
 
   await UserRepository().saveOneSignalId();
-  
-
-  // await PushNotifications.init();
-
-  // await PushNotifications.localNotiInt();
-
-  // FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
-
-  // // on background notification tapped
-  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-  //   if(message.notification != null){
-  //     SLoggerHelper.info('Background Notification tapped: ${message.notification!.body}');
-
-  //   }
-  // });
+  runApp(const App());
+}
 
 
-    runApp(const App());
   // try {
   //   WidgetsFlutterBinding.ensureInitialized();
   //   await Firebase.initializeApp(
@@ -116,6 +152,6 @@ Future<void> main() async{
 //       },
 //     );
 //   }
-}
+
 
 

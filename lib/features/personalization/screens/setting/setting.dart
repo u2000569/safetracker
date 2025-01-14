@@ -55,13 +55,13 @@ class SettingsScreen extends StatelessWidget {
                     // Account Settings
                     const SSectionHeading(title: 'Account Settings' , showActionButton: false,),
                     const SizedBox(height: SSizes.spaceBtwItems),
-                    SSettingsMenuTile(
-                      icon: Iconsax.safe_home,
-                      title: 'My Addresses',
-                      subTitle: 'Set the address',
-                      onTap: () => Get.to(() => const UserAddressScreen()),
-                    ),
-                    SSettingsMenuTile(icon: Iconsax.notification, title: 'Notifications', subTitle: 'Set the notification', onTap: (){},),
+                    // SSettingsMenuTile(
+                    //   icon: Iconsax.safe_home,
+                    //   title: 'My Addresses',
+                    //   subTitle: 'Set the address',
+                    //   onTap: () => Get.to(() => const UserAddressScreen()),
+                    // ),
+                    // SSettingsMenuTile(icon: Iconsax.notification, title: 'Notifications', subTitle: 'Set the notification', onTap: (){},),
 
                     // App Settings
                     // const SizedBox(height: SSizes.spaceBtwSections),

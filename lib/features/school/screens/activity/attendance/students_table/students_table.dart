@@ -12,6 +12,9 @@ class StudentsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(StudentController());
+    if(StudentController.instance.filteredItems.isEmpty){
+      return const Center(child: Text('No student found'));
+    }
     return Obx(
       (){
         // table

@@ -93,10 +93,10 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            TextFormField(
-              controller: controller.detailEmergency,
-            ),
-            const SizedBox(height: SSizes.spaceBtwSections),
+            // TextFormField(
+            //   controller: controller.detailEmergency,
+            // ),
+            // const SizedBox(height: SSizes.spaceBtwSections),
             ElevatedButton(
               onPressed: () {
                 if(selectedIndex == null){
@@ -126,39 +126,43 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                           
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('Send Report', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Text('Report $selectedType', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            /********Location Controller*********/
+                            // const SizedBox(height: SSizes.spaceBtwItems,),
+                            // TextField(
+                            //   controller: _locationController,
+                            //   decoration: const InputDecoration(
+                            //     hintText: 'Enter location',
+                            //     border: OutlineInputBorder(),
+                            //     suffixIcon: Icon(Icons.location_pin),
+                            //   ),
+                            // ),
                             const SizedBox(height: SSizes.spaceBtwItems,),
                             TextField(
-                              controller: _locationController,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter location',
-                                border: OutlineInputBorder(),
-                                suffixIcon: Icon(Icons.location_pin),
-                              ),
-                            ),
-                            const SizedBox(height: SSizes.spaceBtwItems,),
-                            TextField(
+                              
                               controller: controller.detailEmergency,
                               decoration: const InputDecoration(
                                 hintText: 'Enter details',
                                 border: OutlineInputBorder(),
                               ),
                             ),
-                            const SizedBox(height: SSizes.spaceBtwItems,),
-                            GestureDetector(
-                              onTap: () {
+
+                            // Upload Picture
+                            // const SizedBox(height: SSizes.spaceBtwItems,),
+                            // GestureDetector(
+                            //   onTap: () {
                                 
-                              },
-                              child: Container(
-                                height: 30,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey.shade300),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
+                            //   },
+                            //   child: Container(
+                            //     height: 30,
+                            //     width: double.infinity,
+                            //     decoration: BoxDecoration(
+                            //       border: Border.all(color: Colors.grey.shade300),
+                            //       borderRadius: BorderRadius.circular(10.0),
+                            //       color: Colors.grey,
+                            //     ),
+                            //   ),
+                            // ),
                             const SizedBox(height: SSizes.spaceBtwItems,),
                               ElevatedButton(
                               onPressed: () {
@@ -169,9 +173,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                                 Navigator.pop(context);
                               },
                               style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.red,
+                                foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-                                textStyle: const TextStyle(fontSize: 18.0),
+                                textStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -186,14 +190,15 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                 }else{
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Please select an emergency first!'),
+                      content: Text('Please select type emergency first!'),
                     ),
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                side: const BorderSide(color: Colors.white),
+                padding: const EdgeInsets.all(16.0),
                 textStyle: const TextStyle(fontSize: 18.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),

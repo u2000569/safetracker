@@ -8,4 +8,4 @@ enum ImageType { asset, network, memory, file }
 
 enum MediaCategory { folders, banners, brands, categories, products, users }
 
-enum StudentStatus { present, absent, excuse, sick, pending}
+enum StudentStatus { present, absent, excuse, sick, pending, waiting, calling}

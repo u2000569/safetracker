@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:safetracker/data/repositories/student/student_repository.dart';
 import 'package:safetracker/features/personalization/controllers/settings_controller.dart';
 import 'package:safetracker/features/personalization/controllers/user_controller.dart';
+import 'package:safetracker/features/school/controllers/notificationController/notification_controller.dart';
 import 'package:safetracker/home_menu.dart';
 import 'package:safetracker/utils/helpers/network_manager.dart';
 

@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:safetracker/common/widgets/custom_shapes/containers/primary_header_container.dart';
 import 'package:safetracker/features/school/screens/activity/attendance/attendance_screen.dart';
 import 'package:safetracker/features/school/screens/activity/emergency/emergency_screen.dart';
 import 'package:safetracker/features/school/screens/activity/widget_activity/activity_appbar.dart';
+import 'package:safetracker/features/school/screens/dismissal/alert_dismissal.dart';
+import 'package:safetracker/features/school/screens/notification/notification_screen.dart';
 import 'package:safetracker/utils/constants/colors.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
 import 'package:safetracker/utils/helpers/helper_functions.dart';
@@ -42,7 +41,7 @@ class ActivityScreen extends StatelessWidget {
                     icon: Icons.check_circle,
                     title: 'Attendance',
                     onTap: () {
-                      Get.to(AttendanceScreen());
+                      Get.to(() =>AttendanceScreen());
                     },
                   ),
                   const SizedBox(height: SSizes.spaceBtwItems),
@@ -70,6 +69,16 @@ class ActivityScreen extends StatelessWidget {
                     title: 'Dismissal',
                     onTap: () {
                       // Get.toNamed(SRoutes.assignments);
+                      Get.to(() => const AlertDismissalScreen());
+                    },
+                  ),
+                  const SizedBox(height: SSizes.spaceBtwItems),
+                  _buildActivityCard(
+                    context,
+                    icon: Icons.notifications_active,
+                    title: 'Notifications',
+                    onTap: () {
+                      Get.to(() => NotificationScreen());
                     },
                   ),
                 ],

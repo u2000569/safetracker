@@ -48,7 +48,7 @@ class UserController extends GetxController {
     fetchUserDetails().then((_) {
       if(user.value.email.isNotEmpty){
         StudentController.instance.fetchStudentForParent(user.value.email);
-        SLoggerHelper.info('Trigger student fetch when user data is available');
+        SLoggerHelper.info('Trigger student data fetch for ${user.value.email}');
       }
     });
     UserRepository().saveOneSignalId();
@@ -65,7 +65,7 @@ class UserController extends GetxController {
       
       final userRole = await userRepository.fetchUserRole();
 
-      SLoggerHelper.debug('User Role: $userRole');
+      SLoggerHelper.info('User Role: ${userRole.roles}');
 
       if(user.value.id == null || user.value.id!.isEmpty){
         if (userRole.roles == 'teacher') {

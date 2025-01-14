@@ -40,6 +40,7 @@ class ParentRepository extends GetxController {
       //await _db.clearPersistence();
       final userId = AuthenticationRepository.instance.getUserId;
       SLoggerHelper.debug('Fetching user details for user ID: $userId');
+      
       final documentSnapshot = await _db.collection('Parent').doc(userId).get();
       if(documentSnapshot.exists){
         SLoggerHelper.debug('Document data: ${documentSnapshot.data()}');

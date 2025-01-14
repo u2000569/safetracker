@@ -15,16 +15,29 @@ class NotifacationRepository extends GetxController {
   Future<List<NotificationModel>> fetchUserNotification() async{
     try {
       final userId = AuthenticationRepository.instance.getUserId;
-    SLoggerHelper.info('Fetching user notification for user: $userId');
-    if(userId.isEmpty) throw 'User ID is empty';
+      SLoggerHelper.info('Fetching user notification for user: $userId');
+      if(userId.isEmpty) throw 'User ID is empty';
 
-    final result = await _db.collection('Notifications').where('userId', isEqualTo: userId).get();
-    return result.docs.map((documentSnapshot) => NotificationModel.fromDocument(documentSnapshot)).toList();
+      final result = await _db.collection('Notification').where('userId', isEqualTo: userId).get();
+      return result.docs.map((documentSnapshot) => NotificationModel.fromDocument(documentSnapshot)).toList();
     } catch (e) {
       SLoggerHelper.error('Error fetching user notification: $e');
       return [];
     }
   }
+
+  /*------------------- Type(Arrival) User's Notification -------------------*/
+  Future<List<NotificationModel>> typeNotification() async{
+    try {
+      SLoggerHelper.info('fetching type notification Arrival');
+      final type = await _db.collection('Notification').where('type', isEqualTo: 'Arrival').get();
+      return type.docs.map((documentSnapshot) => NotificationModel.fromDocument(documentSnapshot)).toList();
+    } catch (e) {
+      SLoggerHelper.error('Error fetching type notification: $e');
+      return [];
+    }
+  } 
+
 
   /*------------------- Send User's Notification -------------------*/
   Future<void> sendUserNotification(NotificationModel noti, String userId) async{
@@ -32,7 +45,17 @@ class NotifacationRepository extends GetxController {
       await _db.collection('Notification').add(noti.toJson());
       SLoggerHelper.info('Notification saved successfully');
     } catch (e) {
-      SLoggerHelper.error('Error send notification error to $userId: $e');
+      SLoggerHelper.error('Error send notification error from $userId: $e');
     }
   }
+
+  Future<void> updateNotificationStatus(String notificationId, bool status) async {
+  try {
+    await _db.collection('Notification').doc(notificationId).update({'status': status});
+    SLoggerHelper.info('Notification status updated successfully');
+  } catch (e) {
+    SLoggerHelper.error('Failed to update notification status: $e');
+  }
+}
+
 }

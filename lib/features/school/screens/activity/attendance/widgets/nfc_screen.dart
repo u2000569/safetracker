@@ -8,11 +8,16 @@ import '../../../../../personalization/controllers/nfc_controller.dart';
 
 class NFCscreen extends StatelessWidget {
   final String action; // "check in" or "check out"
+  // final StudentModel student;
   final NfcController nfcController = Get.put(NfcController());
   late final Future<LottieComposition> _composition;
   
+  NFCscreen({
+    required this.action,
+    // required this.student,
+    super.key
+  }){
 
-  NFCscreen({required this.action, super.key}){
     // Preload the Lottie composition when the widget is instantiated
     _composition = AssetLottie(SImages.tapNFC).load();
   }

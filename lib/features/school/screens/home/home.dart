@@ -2,12 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:safetracker/api/one_signal_service.dart';
 import 'package:safetracker/common/widgets/custom_shapes/containers/primary_header_container.dart';
 import 'package:safetracker/common/widgets/student_cards/student_info_card.dart';
+import 'package:safetracker/features/school/controllers/dismissalController/dismissal_controller.dart';
 import 'package:safetracker/features/school/controllers/notificationController/notification_controller.dart';
 import 'package:safetracker/features/school/controllers/student/student_controller.dart';
 import 'package:safetracker/features/school/models/student_model.dart';
+import 'package:safetracker/features/school/screens/dismissal/dismissal_screen.dart';
+import 'package:safetracker/features/school/screens/home/widgets/quick_buttons.dart';
 import 'package:safetracker/utils/constants/sizes.dart';
 import 'package:safetracker/utils/device/device_utility.dart';
 import 'package:safetracker/utils/logging/logger.dart';
@@ -25,6 +29,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(StudentController());
     final userController = Get.put(UserController());
+    final dismissalController = Get.put(DismissalController());
     // final notificationController = Get.put(NotificationController());
     final _db = FirebaseFirestore.instance;
 
@@ -50,6 +55,7 @@ class HomeScreen extends StatelessWidget {
               final parentEmail = userController.user.value.email;
               final parentName = userController.user.value.fullName;
               final studentName = controller.studentParent.value?.name ?? '';
+              // final studentDocId = controller.studentParent.value?.docId ?? '';
 
               if (parentEmail.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
@@ -89,25 +95,58 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Home', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+
+                        // Student Card
                         const SizedBox(height: SSizes.spaceBtwItems),
                         ...studentData.map((student) => _buildStudentInfoCard(context, student)),
 
                         const Divider(thickness: 1, height: 40),
+                        const SizedBox(height: SSizes.spaceBtwItems),
+
+                        // Quick Actions
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            QuickActionButton(
+                              icon: Iconsax.add_circle, 
+                              label: 'Dismissal', 
+                              onPressed: (){
+                                Get.to(const DismissalScreen());
+                              }
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: SSizes.spaceBtwItems),
 
                         _buildActivityCard(
                           context,
                           icon: Icons.check_circle,
                           title: 'Arrived',
                           onSlideComplete: () async {
-                            SLoggerHelper.info('Mr/Mrs $parentName has arrived to pick up $studentName');
-                            await OneSignalService.teacherNotification(
-                              title: "Arrived",
-                              body: 'Mr/Mrs $parentName has arrived to pick up $studentName',
-                              userRoleTag: "teacher",
-                            );
+                            try {
+                              SLoggerHelper.info('Mr/Mrs $parentName has arrived to pick up $studentName');
+                              await OneSignalService.teacherNotification(
+                                title: "Arrived",
+                                body: 'Mr/Mrs $parentName has arrived to pick up $studentName',
+                                userRoleTag: "teacher",
+                              );
+
+                              /*------------------- Send Alert Dismissal -------------------*/
+                              // Option 1
+                            // SLoggerHelper.info('Retrive student Doc ID: $studentDocId');
+                            // dismissalController.alertDismissal(studentDocId);
+
+                            // Option 2
+                            final studentDocIds = studentData.map((student) => student.docId).toList();
+                            SLoggerHelper.info('Retrive student Doc IDs: $studentDocIds');
+                            dismissalController.listAlertDismissal(studentDocIds);
 
                             // save to firestore
                             NotificationController().procesSendNotification();
+                            } catch (e) {
+                              SLoggerHelper.error('Error sending notification: $e');
+                            }
+                            // DismissalController().createDismissal(studentName);
                           },
                         ),
                         const SizedBox(height: SSizes.spaceBtwItems),

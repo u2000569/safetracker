@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safetracker/data/repositories/student/student_repository.dart';
+import 'package:safetracker/features/school/controllers/dismissalController/dismissal_controller.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 import 'package:safetracker/utils/popups/loader.dart';
 
@@ -22,10 +23,14 @@ class StudentController extends SBaseController<StudentModel> {
   final isLoading = false.obs;
   final studentRepository = Get.put(StudentRepository());
   RxList<StudentModel> featuredStudents = <StudentModel>[].obs;
+
   final _studentRepository = Get.put(StudentRepository());
   final studentParent = Rx<StudentModel?>(null);
+  final RxList<StudentModel> studentParentList = <StudentModel>[].obs;
 
   final _db = FirebaseFirestore.instance;
+  // to update the table
+  RxList<StudentModel> filteredItems = <StudentModel>[].obs;
 
   //initialize the controller
   @override
@@ -33,7 +38,9 @@ class StudentController extends SBaseController<StudentModel> {
     try {
       SLoggerHelper.info("Initializing StudentController...");
       fetchFeaturedStudents();
-      fetchStudentForParent(studentParent.value!.parent!.email);
+      // SLoggerHelper.info('Student Information  : ${studentParent.value}');
+      // fetchStudentForParent(studentParent.value!.parent!.email);
+      // filteredItems.refresh();
     } catch (e) {
       SLoggerHelper.error("Error during initialization: $e");
     }
@@ -41,11 +48,25 @@ class StudentController extends SBaseController<StudentModel> {
     super.onInit();
   }
 
+  void refreshTable() {
+  update(); // Trigger a rebuild of the UI
+  }
+
+  void updateStudentList(StudentModel updateStudent){
+    int index = filteredItems.indexWhere((student) => student.id == updateStudent.id);
+    if(index == -1){
+      SLoggerHelper.error('Student ${updateStudent.id} not found in the list');
+    }
+    filteredItems[index] = updateStudent;
+    filteredItems.refresh();
+  }
+
   void fetchFeaturedStudents() async{
     try {
       SLoggerHelper.info("Fetching featured students...");
+      // Show loader while loading Products
       isLoading.value = true;
-
+      // fetch student
       final students = await studentRepository.getFeaturedStudents();
 
       // Assign students
@@ -83,9 +104,11 @@ class StudentController extends SBaseController<StudentModel> {
       final student = await StudentRepository.instance.fetchStudentParent(parentEmail);
       SLoggerHelper.info('Student for parent: $student');
       if (student != null) {
-        studentParent.value = student;
-        SLoggerHelper.info("Student fetched successfully for parent: $parentEmail");
+        // studentParentList.assignAll(student.whereType<StudentModel>());
+        studentParent.value = student; // Set the first student as the default
+        SLoggerHelper.info("Student fetched successfully for parent: $parentEmail. Count: ${studentParentList.length}");
       } else{
+        // studentParentList.clear(); // Clear the list if no students found
         studentParent.value = null;
         SLoggerHelper.warning('Cannot find student for parent: $parentEmail');
       }
@@ -129,7 +152,7 @@ class StudentController extends SBaseController<StudentModel> {
     );
 
     if (image == null) {
-      SLoaders.errorSnackBar(title: 'No Image Selected', message: 'Please select an image to upload.');
+      SLoaders.warningSnackBar(title: 'No Image Selected', message: 'Please select an image to upload.');
       return;
     }
 

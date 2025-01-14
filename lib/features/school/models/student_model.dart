@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safetracker/features/school/models/dismissal_model.dart';
 
 import '../../../utils/constants/enums.dart';
 import '../../../utils/helpers/helper_functions.dart';
@@ -11,12 +12,13 @@ class StudentModel{
   String id;
   final String userId;
   // final double age;
-  final DateTime attendanceDate;
+  DateTime attendanceDate;
   StudentStatus status;
   String thumbnail;
   String name; // same as title product
   GradeModel? grade;
   UserModel? parent;
+  DismissalModel? dismissal;
 
   StudentModel({
     required this.id,
@@ -25,9 +27,10 @@ class StudentModel{
     required this.attendanceDate,
     required this.status,
     this.thumbnail = '',
-    required this.name,
+    this.name = '',
     this.grade,
     this.parent,
+    this.dismissal,
   });
 
   String get formattedAttendanceDate => SHelperFunctions.getFormattedDate(attendanceDate);
@@ -55,8 +58,9 @@ class StudentModel{
       'attendanceDate': attendanceDate,
       'thumbnail': thumbnail,
       'name' : name,
-      'Grade': grade != null ? grade!.toJson() : null,
-      'Parent': parent != null ? parent!.toJson() : null,
+      'Grade': grade?.toJson(),
+      'Parent': parent?.toJson(),
+      'Dismissal': dismissal?.toJson(),
     };
   }
 
@@ -82,6 +86,7 @@ class StudentModel{
       name: data['name'] ?? '',
       grade: data.containsKey('Grade') && data['Grade'] != null ? GradeModel.fromJson(data['Grade']) : null,
       parent: data.containsKey('Parent') && data['Parent'] != null ? UserModel.fromJson(data['Parent']) : null,
+      dismissal: data.containsKey('Dismissal') && data['Dismissal'] != null ? DismissalModel.fromDocument(data['Dismissal']) : null,
 
     );
   }

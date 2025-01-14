@@ -7,17 +7,19 @@ import 'package:safetracker/utils/constants/sizes.dart';
 
 import '../../../../common/widgets/layouts/grid_layout.dart';
 import '../../../../common/widgets/student_cards/student_card_vertical.dart';
+import '../../../../data/repositories/student/student_repository.dart';
 import '../../controllers/all_student_controller.dart';
 import '../../models/student_model.dart';
 
 class AllStudents extends StatelessWidget {
-  const AllStudents({super.key, required this.title, this.query, this.futureMethod});
+  AllStudents({super.key, required this.title, this.query, this.futureMethod});
 
   final String title;
 
   final Query? query;
 
   final Future<List<StudentModel>>? futureMethod;
+  final studentRepository = Get.put(StudentRepository());
 
   @override
   Widget build(BuildContext context) {

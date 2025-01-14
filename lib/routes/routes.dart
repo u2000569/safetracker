@@ -6,4 +6,6 @@ class SRoutes {
   static const settings = '/settings';
   static const activity = '/activity';
   static const nfcScreen = '/nfcScreen';
+
+  static const attendance = '/attendance';
 }

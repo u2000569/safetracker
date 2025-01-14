@@ -7,6 +7,7 @@ import '../../utils/popups/loader.dart';
 
 
 abstract class SBaseController<T> extends GetxController{
+  static SBaseController get instance => Get.find();
   RxBool isLoading = true.obs; // Observables for managing loading state
   RxInt sortColumnIndex = 1.obs; // Observable for tracking the index of the column for sorting
   RxBool sortAscending = true.obs; // Observable for tracking the sorting order (ascending or descending)

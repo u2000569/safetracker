@@ -98,24 +98,24 @@ class AppScreenController extends GetxController {
       if (userRole.roles == 'teacher') {
         screens.assignAll([
           const HomeTeacherScreen(),
-          const ActivityScreen(),
+          // const ActivityScreen(),
           const SettingsScreen(),
         ]);
         navigationDestinations.assignAll([
           const NavigationDestination(icon: Icon(Iconsax.home), label: 'Home Teacher'),
-          const NavigationDestination(icon: Icon(Iconsax.activity), label: 'Activity'),
-          const NavigationDestination(icon: Icon(Iconsax.settings), label: 'Settings'),
+          // const NavigationDestination(icon: Icon(Iconsax.activity), label: 'Activity'),
+          const NavigationDestination(icon: Icon(Iconsax.settings), label: 'Profile'),
         ]);
       } else if(userRole.roles == 'parent'){
         screens.assignAll([
           const HomeScreen(),
-          const ActivityScreen(),
+          // const ActivityScreen(),
           const SettingsScreen(),
         ]);
         navigationDestinations.assignAll([
           const NavigationDestination(icon: Icon(Iconsax.home), label: 'Home Parent'),
-          const NavigationDestination(icon: Icon(Iconsax.activity), label: 'Activity'),
-          const NavigationDestination(icon: Icon(Iconsax.settings), label: 'Settings'),
+          // const NavigationDestination(icon: Icon(Iconsax.activity), label: 'Activity'),
+          const NavigationDestination(icon: Icon(Iconsax.settings), label: 'Profile'),
         ]);
       }
     }

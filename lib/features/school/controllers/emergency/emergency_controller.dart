@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:safetracker/data/abstract/base_data_table_controller.dart';
+import 'package:safetracker/features/school/screens/activity/emergency/studentlist_check.dart';
 import 'package:safetracker/utils/logging/logger.dart';
 
 import '../../../../data/repositories/emergency/emergency_repository.dart';
@@ -62,6 +63,7 @@ class EmergencyController extends SBaseController<EmergencyModel> {
       // Update the list of emergencies
       // EmergencyController.instance.addItemToLists(newEmergency);
       SLoaders.successSnackBar(title: 'Suceess', message: 'Emergency reported successfully');
+      Get.to(() => const StudentListScreen());
 
       isLoading.value = false; 
     } catch(e){

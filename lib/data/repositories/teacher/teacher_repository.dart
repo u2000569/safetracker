@@ -4,9 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:safetracker/data/repositories/user/user_repository.dart';
 import 'package:safetracker/utils/logging/logger.dart';
-
 import '../../../features/personalization/models/user_model.dart';
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';

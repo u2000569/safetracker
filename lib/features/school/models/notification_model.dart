@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safetracker/utils/helpers/helper_functions.dart';
+import 'package:safetracker/utils/logging/logger.dart';
 
 class NotificationModel{
   final String id;
@@ -34,6 +35,7 @@ class NotificationModel{
 
   toJson(){
     return {
+      'id': id,
       'userId': userId,
       'title': title,
       'message': message,
@@ -43,19 +45,23 @@ class NotificationModel{
     };
   }
   factory NotificationModel.fromDocument(DocumentSnapshot<Map<String, dynamic>> document) {
-    if (document.data() != null) {
-      final data = document.data()!;
-      return NotificationModel(
-      id: data.containsKey('id') ? data['id'] : document.id,
-      userId: data['userId'] ?? '',
-      title: data['title'] ?? '',
-      message: data['message'] ?? '',
-      type: data['type'] ?? '',
-      status: data.containsKey('status') ? data['status'] as bool : true,
-      createdAt: data.containsKey('createdAt') ? (data['createdAt'] as Timestamp).toDate() : DateTime.now(),
-      );
-    } else {
-      return NotificationModel.empty();
-    }
+  final data = document.data();
+  
+  if (data == null) {
+    // Log or handle the case where the document data is null
+    SLoggerHelper.error('Error: Document Notification ${document.id} has no data.');
+    return NotificationModel.empty();
   }
+
+  return NotificationModel(
+    id: data.containsKey('id') ? data['id'] : document.id,
+    userId: data['userId'] ?? '',
+    title: data['title'] ?? '',
+    message: data['message'] ?? '',
+    type: data['type'] ?? '',
+    status: data.containsKey('status') ? data['status'] as bool : false,
+    createdAt: data.containsKey('createdAt') ? (data['createdAt'] as Timestamp).toDate() : DateTime.now(),
+  );
+}
+
 }

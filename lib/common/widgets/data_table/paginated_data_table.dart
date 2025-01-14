@@ -69,7 +69,7 @@ class SPaginatedDataTable extends StatelessWidget {
           dataRowHeight: dataRowHeight,
 
           /// CHECKBOX
-          showCheckboxColumn: true,
+          showCheckboxColumn: false,
 
           /// PAGINATION
           showFirstLastButtons: true,

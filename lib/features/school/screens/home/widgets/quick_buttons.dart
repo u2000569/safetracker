@@ -23,12 +23,18 @@ class QuickActionButton extends StatelessWidget {
             padding: const EdgeInsets.all(SSizes.defaultSpace),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Theme.of(context).primaryColorDark,
+              color: Theme.of(context).cardColor,
+              boxShadow: List<BoxShadow>.generate(3, (int index) => BoxShadow(
+                color: SColors.black.withOpacity(0.1),
+                blurRadius: 10.0,
+                offset: const Offset(0, 5),
+              )),
+              
             ),
-            child: Icon(icon, size: 32.0, color: SColors.white,),
+            child: Icon(icon, size: 32.0, color: SColors.primary,),
           ),
         ),
-        const SizedBox(height: SSizes.spaceBtwInputFields),
+        const SizedBox(height: SSizes.xs),
         Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
